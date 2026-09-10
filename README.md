@@ -20,11 +20,14 @@ This repo replaces the price chart with screenshots of election questions.
 2. Brain state is snapshotted.
 3. From that snapshot the fly sees a blank for 500 ms. That gives the baseline.
 4. From the same snapshot it sees each answer tile (four smileys, or five circles on
-   a 1-5 question) for 500 ms. Score per tile = mean MBON07 rate minus mean MBON11
-   rate, minus the baseline. MBON07 (alpha1) drives approach in the fly, MBON11
-   (gamma1pedc) drives avoidance. These are the mushroom body output cells that
-   dopamine rewires when a fly learns; here nothing teaches it, so this is innate
-   preference.
+   a 1-5 question) for 500 ms. Score per tile = mean membrane voltage above rest of
+   the approach MBONs minus that of the avoidance MBONs, minus the baseline. The sets
+   follow [Aso et al. 2014](https://elifesciences.org/articles/04580): approach is
+   MBON07, 09, 11, 12, 13, 14, avoidance is MBON01, 03, 04, 05, 06. Voltage rather
+   than spikes because these 22 cells spike rarely in 500 ms and the voltage is what
+   calcium imaging of MBON dendrites measures. These are the mushroom body output
+   cells that dopamine rewires when a fly learns; here nothing teaches it, so this is
+   innate preference.
 5. Step 4 runs five times with small fixed pixel shifts and brightness changes on the
    tiles. The simulator is deterministic, real neurons are not; the jitter stands in
    for trial-to-trial noise. Highest mean score over the five runs wins. The `n/5`
@@ -35,6 +38,9 @@ This repo replaces the price chart with screenshots of election questions.
 
 No learning. Weights are frozen. No randomness. Same screenshots in the same order
 give the same answers every run.
+
+Earlier versions read MBON07 minus MBON11 spike counts. MBON11 is an approach cell
+per Aso et al., so that was approach minus approach. Fixed.
 
 ## Run it
 

@@ -2,9 +2,10 @@
 
 Per question: blank screen, question screenshot, blank screen, snapshot. From that
 snapshot the fly sees a blank (baseline) and each answer tile under a few fixed
-pixel jitters. Valence per tile = mean MBON07 (approach) rate minus mean MBON11
-(avoidance) rate, minus the same during the blank. Highest mean over the jitter trials wins;
-the printed n/5 is how many trials agreed, and 5/5 marks the question "extra viktigt".
+pixel jitters. Valence per tile = mean membrane voltage above rest of the approach
+MBONs minus that of the avoidance MBONs (sets from Aso et al. 2014), minus the same
+during the blank. Highest mean over the jitter trials wins; the printed n/5 is how
+many trials agreed, and 5/5 marks the question "extra viktigt".
 The fly then sees the winner so its state carries on. The fly cannot read.
 """
 
@@ -19,6 +20,9 @@ from neural.common import annotations
 from neural.visual import VisualMemoryBrain
 
 EXPOSURE_MS = 500
+CHUNK_MS = 10
+APPROACH = ["MBON07", "MBON09", "MBON11", "MBON12", "MBON13", "MBON14"]
+AVOID = ["MBON01", "MBON03", "MBON04", "MBON05", "MBON06"]
 BLANK = np.full((180, 320, 3), 128, dtype=np.uint8)
 # (dx, dy, brightness gain). Trial 0 is the unjittered tile.
 JITTERS = [(0, 0, 1.0), (2, 1, 1.05), (-2, -1, 0.95), (1, -2, 1.03), (-1, 2, 0.97)]
@@ -50,16 +54,22 @@ class Fly:
         self.brain = VisualMemoryBrain()
         self.brain.weights_frozen = True
         types = annotations(self.brain.ids).type.fillna("")
-        self.approach = np.flatnonzero(types.eq("MBON07"))
-        self.avoid = np.flatnonzero(types.eq("MBON11"))
+        self.approach = np.flatnonzero(types.isin(APPROACH))
+        self.avoid = np.flatnonzero(types.isin(AVOID))
+        self.last_valence = 0.0
 
     def see(self, frame):
-        self.brain.rgb_step(frame, EXPOSURE_MS, learning=False)
+        b = self.brain
+        total = 0.0
+        chunks = EXPOSURE_MS // CHUNK_MS
+        for _ in range(chunks):
+            b.rgb_step(frame, CHUNK_MS, learning=False)
+            above_rest = b.v - b.rest
+            total += above_rest[self.approach].mean() - above_rest[self.avoid].mean()
+        self.last_valence = float(total / chunks)
 
     def valence(self):
-        counts = self.brain.counts
-        hz = 1000 / EXPOSURE_MS
-        return float(counts[self.approach].mean() - counts[self.avoid].mean()) * hz
+        return self.last_valence
 
 
 def label(tile_name):
