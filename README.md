@@ -39,6 +39,10 @@ This repo replaces the price chart with screenshots of election questions.
 No learning. Weights are frozen. No randomness. Same screenshots in the same order
 give the same answers every run.
 
+Before the first question the script prints the fly's innate bias: the same tile
+scoring on a fresh brain that has seen no question. If the answers below match it,
+the questions did nothing.
+
 Earlier versions read MBON07 minus MBON11 spike counts. MBON11 is an approach cell
 per Aso et al., so that was approach minus approach. Fixed.
 

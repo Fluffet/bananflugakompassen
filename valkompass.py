@@ -114,6 +114,11 @@ def main(folder):
     }
     fly = Fly()
     print(f"{'#':>3}  {'question':<40}  " + "".join(f"{i:>7}" for i in range(1, 6)) + "  answer")
+    fly.see(BLANK)
+    for fmt, tiles in tile_sets.items():
+        scores, votes = decide(fly, tiles)
+        cells = "".join(f"{s:>+7.2f}" for s in scores) + "       " * (5 - len(scores))
+        print(f"{'':>3}  {'innate bias, no question, ' + fmt:<40}  {cells}", flush=True)
     for shot in shots:
         scale = tile_format(shot) == "scale"
         tiles = tile_sets["scale" if scale else "smiley"]
