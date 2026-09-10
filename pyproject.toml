@@ -1,0 +1,14 @@
+[project]
+name = "bananflugakompassen"
+version = "0.1.0"
+description = "A fruit fly connectome answers the SVT Valkompass"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy==2.4.6",
+  "pandas==3.0.5",
+  "pyarrow==25.0.1",
+  "Pillow==12.3.0",
+]
+
+[tool.uv]
+package = false
