@@ -32,7 +32,7 @@ This repo replaces the price chart with screenshots of election questions.
    tiles. The simulator is deterministic, real neurons are not; the jitter stands in
    for trial-to-trial noise. Highest mean score over the five runs wins. The `n/5`
    after the answer is how many runs agreed with it. An exact tie in the mean is
-   "Hoppa över". All five agreeing flips the "Extra viktigt för mig" toggle.
+   "Hoppa över". Four or more agreeing flips the "Extra viktigt för mig" toggle.
 6. Snapshot is restored and the fly sees the winning tile once more, so the choice
    carries into the next question.
 

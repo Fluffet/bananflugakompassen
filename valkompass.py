@@ -5,7 +5,7 @@ snapshot the fly sees a blank (baseline) and each answer tile under a few fixed
 pixel jitters. Valence per tile = mean membrane voltage above rest of the approach
 MBONs minus that of the avoidance MBONs (sets from Aso et al. 2014), minus the same
 during the blank. Highest mean over the jitter trials wins; the printed n/5 is how
-many trials agreed, and 5/5 marks the question "extra viktigt".
+many trials agreed, and 4/5 or better marks the question "extra viktigt".
 The fly then sees the winner so its state carries on. The fly cannot read.
 """
 
@@ -23,6 +23,7 @@ EXPOSURE_MS = 500
 CHUNK_MS = 10
 APPROACH = ["MBON07", "MBON09", "MBON11", "MBON12", "MBON13", "MBON14"]
 AVOID = ["MBON01", "MBON03", "MBON04", "MBON05", "MBON06"]
+IMPORTANT_VOTES = 4
 BLANK = np.full((180, 320, 3), 128, dtype=np.uint8)
 # (dx, dy, brightness gain). Trial 0 is the unjittered tile.
 JITTERS = [(0, 0, 1.0), (2, 1, 1.05), (-2, -1, 0.95), (1, -2, 1.03), (-1, 2, 0.97)]
@@ -129,7 +130,7 @@ def main(folder):
         leaders = np.flatnonzero(scores == scores.max())
         if len(leaders) == 1:
             best = leaders[0]
-            important = votes[best] == len(JITTERS)
+            important = votes[best] >= IMPORTANT_VOTES
             answer = f"{label(tiles[best][0])} ({votes[best]}/{len(JITTERS)})" + (" extra viktigt" if important else "")
             fly.see(tiles[best][1])
         else:
