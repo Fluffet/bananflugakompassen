@@ -3,30 +3,22 @@
 Per question: blank screen, question screenshot, blank screen, snapshot. From that
 snapshot the fly sees a blank (baseline) and each answer tile under a few fixed
 pixel jitters. Valence per tile = mean MBON07 (approach) rate minus mean MBON11
-(avoidance) rate, minus the same during the blank. Each jitter trial votes for its
-best tile; most votes wins. The fly then sees the winner so its state carries on.
-The fly cannot read.
+(avoidance) rate, minus the same during the blank. Highest mean over the jitter trials wins;
+the printed n/5 is how many trials agreed, and 5/5 marks the question "extra viktigt".
+The fly then sees the winner so its state carries on. The fly cannot read.
 """
 
 import re
 import sys
 from pathlib import Path
-from types import SimpleNamespace
 
 import numpy as np
 from PIL import Image
 
 from neural.common import annotations
-from neural.controller import FlyController
+from neural.visual import VisualMemoryBrain
 
-SETTINGS = SimpleNamespace(
-    neural_ms=500,
-    neural_bin_ms=10,
-    pulse_ms=200,
-    pulse_current=20,
-    decoder_threshold_hz=2,
-    learning=False,
-)
+EXPOSURE_MS = 500
 BLANK = np.full((180, 320, 3), 128, dtype=np.uint8)
 # (dx, dy, brightness gain). Trial 0 is the unjittered tile.
 JITTERS = [(0, 0, 1.0), (2, 1, 1.05), (-2, -1, 0.95), (1, -2, 1.03), (-1, 2, 0.97)]
@@ -53,17 +45,21 @@ def restore(brain, snap):
     brain.sim_ms = cursor * brain.dt
 
 
-class Valence:
-    def __init__(self, brain):
-        types = annotations(brain.ids).type.fillna("")
+class Fly:
+    def __init__(self):
+        self.brain = VisualMemoryBrain()
+        self.brain.weights_frozen = True
+        types = annotations(self.brain.ids).type.fillna("")
         self.approach = np.flatnonzero(types.eq("MBON07"))
         self.avoid = np.flatnonzero(types.eq("MBON11"))
-        self.brain = brain
 
-    def __call__(self):
-        seconds = SETTINGS.neural_ms / 1000
+    def see(self, frame):
+        self.brain.rgb_step(frame, EXPOSURE_MS, learning=False)
+
+    def valence(self):
         counts = self.brain.counts
-        return float(counts[self.approach].mean() - counts[self.avoid].mean()) / seconds
+        hz = 1000 / EXPOSURE_MS
+        return float(counts[self.approach].mean() - counts[self.avoid].mean()) * hz
 
 
 def label(tile_name):
@@ -78,17 +74,17 @@ def tile_format(path):
     return "scale" if re.match(r"\d+s", path.stem) else "smiley"
 
 
-def decide(fly, valence, tiles):
+def decide(fly, tiles):
     brain = fly.brain
     snap = snapshot(brain)
-    fly.observe(BLANK, "none")
-    baseline = valence()
+    fly.see(BLANK)
+    baseline = fly.valence()
     scores = np.zeros((len(JITTERS), len(tiles)))
     for t, (dx, dy, gain) in enumerate(JITTERS):
         for i, (_, tile) in enumerate(tiles):
             restore(brain, snap)
-            fly.observe(jitter(tile, dx, dy, gain), "none")
-            scores[t, i] = valence() - baseline
+            fly.see(jitter(tile, dx, dy, gain))
+            scores[t, i] = fly.valence() - baseline
     votes = np.zeros(len(tiles), dtype=int)
     for row in scores:
         winners = np.flatnonzero(row == row.max())
@@ -106,19 +102,21 @@ def main(folder):
         fmt: [(o.stem, load(o)) for o in sorted(Path("options", fmt).glob("*.png"))]
         for fmt in ["smiley", "scale"]
     }
-    fly = FlyController(SETTINGS)
-    valence = Valence(fly.brain)
+    fly = Fly()
     print(f"{'#':>3}  {'question':<40}  " + "".join(f"{i:>7}" for i in range(1, 6)) + "  answer")
     for shot in shots:
-        tiles = tile_sets[tile_format(shot)]
-        fly.observe(BLANK, "none")
-        fly.observe(load(shot), "none")
-        fly.observe(BLANK, "none")
-        scores, votes = decide(fly, valence, tiles)
-        leaders = np.flatnonzero(votes == votes.max())
-        if len(leaders) == 1 and votes.max() > 0:
-            answer = f"{label(tiles[leaders[0]][0])} ({votes.max()}/{len(JITTERS)})"
-            fly.observe(tiles[leaders[0]][1], "none")
+        scale = tile_format(shot) == "scale"
+        tiles = tile_sets["scale" if scale else "smiley"]
+        fly.see(BLANK)
+        fly.see(load(shot))
+        fly.see(BLANK)
+        scores, votes = decide(fly, tiles)
+        leaders = np.flatnonzero(scores == scores.max())
+        if len(leaders) == 1:
+            best = leaders[0]
+            important = votes[best] == len(JITTERS)
+            answer = f"{label(tiles[best][0])} ({votes[best]}/{len(JITTERS)})" + (" extra viktigt" if important else "")
+            fly.see(tiles[best][1])
         else:
             answer = "hoppa över (" + ", ".join(label(tiles[i][0]) for i in leaders) + ")"
         question = shot.stem.split("-", 1)[1][:40]

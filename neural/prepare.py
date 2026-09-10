@@ -99,8 +99,8 @@ def prepare(dataset="malecns_v1"):
         "uncertain_sign_neurons": int(uncertain.sum()),
         "retina_model": "R1-R6 luminance-only. Column inferred from all contacts onto annotated L1/L2/L3; modal column. Experimental overlapping viewport projection, not calibrated retinal angles.",
         "visual_dynamics": "Photoreceptors and lamina are graded in vivo. This experiment uses an explicit LIF proxy, low-pass luminance drive and tonic lamina current; it is not validated fly vision.",
-        "motor_interface": "Bananflugakompassen scores answer tiles by PAM11 minus PPL101 dopamine spikes. This is an engineered interface, not fly decision making.",
-        "training": "The compiled graph is the baseline. Runtime adds the documented candidate KC-to-MBON07/11 plasticity and R8-to-aMe12 sign assumption.",
+        "readout": "Bananflugakompassen scores answer tiles by mean MBON07 minus MBON11 firing, baseline-subtracted. Engineered interface, not fly decision making.",
+        "training": "None. Weights stay at the compiled baseline; the KC-to-MBON07/11 plasticity rule is present but frozen. R8-to-aMe12 sign assumption applies.",
     }
     out = DATA
     out.mkdir(parents=True, exist_ok=True)

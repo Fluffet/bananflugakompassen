@@ -59,39 +59,26 @@ def verify():
     }
 
 
-def prepare(reuse=None):
+def prepare():
     DATA.mkdir(parents=True, exist_ok=True)
-    if reuse:
-        root = Path(reuse)
-        mapping = {
-            root / "outputs/doom/malecns_v1/graph.npz": GRAPH,
-            root / "connectome_data/malecns_v1/annotations.feather": DATA
-            / "annotations.feather",
-            root / "connectome_data/malecns_v1/normalized/neurons.feather": DATA
-            / "normalized/neurons.feather",
-        }
-        for source, target in mapping.items():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source, target)
-    else:
-        lock = json.loads((PACKAGE / "sources.lock.json").read_text())
-        for name, info in lock.items():
-            path = DATA / name
-            if not path.exists():
-                print("Downloading", name, flush=True)
-                tmp = path.with_suffix(".partial")
-                urllib.request.urlretrieve(info["url"], tmp)
-                if sha(tmp) != info["sha256"]:
-                    raise RuntimeError("Downloaded checksum mismatch: " + name)
-                tmp.replace(path)
-            if sha(path) != info["sha256"]:
-                raise RuntimeError("Source checksum mismatch: " + name)
-        shutil.copyfile(PACKAGE / "sources.lock.json", DATA / "source.lock.json")
-        from neural.connectome import import_graph
-        from neural.prepare import prepare as compile_graph
+    lock = json.loads((PACKAGE / "sources.lock.json").read_text())
+    for name, info in lock.items():
+        path = DATA / name
+        if not path.exists():
+            print("Downloading", name, flush=True)
+            tmp = path.with_suffix(".partial")
+            urllib.request.urlretrieve(info["url"], tmp)
+            if sha(tmp) != info["sha256"]:
+                raise RuntimeError("Downloaded checksum mismatch: " + name)
+            tmp.replace(path)
+        if sha(path) != info["sha256"]:
+            raise RuntimeError("Source checksum mismatch: " + name)
+    shutil.copyfile(PACKAGE / "sources.lock.json", DATA / "source.lock.json")
+    from neural.connectome import import_graph
+    from neural.prepare import prepare as compile_graph
 
-        import_graph()
-        compile_graph()
+    import_graph()
+    compile_graph()
     print(json.dumps(verify()), flush=True)
 
 
