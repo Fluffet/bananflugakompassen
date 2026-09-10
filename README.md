@@ -1,3 +1,5 @@
+![Bananflugakompassen](banner.png)
+
 # Bananflugakompassen
 
 A fruit fly brain answers the SVT Valkompass 2026.
