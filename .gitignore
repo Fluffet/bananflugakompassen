@@ -1,0 +1,6 @@
+.venv/
+data/
+screenshots/
+__pycache__/
+*.so
+*.partial
