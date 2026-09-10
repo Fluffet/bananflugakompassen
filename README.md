@@ -27,8 +27,9 @@ This repo replaces the price chart with screenshots of election questions.
    preference.
 5. Step 4 runs five times with small fixed pixel shifts and brightness changes on the
    tiles. The simulator is deterministic, real neurons are not; the jitter stands in
-   for trial-to-trial noise. Each run votes for its best tile. Most votes wins, shown
-   as e.g. `ganska bra (4/5)`. A tie in votes is "Hoppa över".
+   for trial-to-trial noise. Highest mean score over the five runs wins. The `n/5`
+   after the answer is how many runs agreed with it. An exact tie in the mean is
+   "Hoppa över". All five agreeing flips the "Extra viktigt för mig" toggle.
 6. Snapshot is restored and the fly sees the winning tile once more, so the choice
    carries into the next question.
 
@@ -37,15 +38,12 @@ give the same answers every run.
 
 ## Run it
 
-Python 3.11, a C++ compiler, ~16 GB RAM. `prepare.py` downloads about 1 GB from
-Janelia and compiles the graph.
+[uv](https://docs.astral.sh/uv/), a C++ compiler, ~16 GB RAM. `prepare.py` downloads
+about 1 GB from Janelia and compiles the graph.
 
 ```sh
-mise use python@3.11
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python prepare.py
-python valkompass.py
+uv run prepare.py
+uv run valkompass.py
 ```
 
 Screenshots go in `screenshots/` as `NN-anything.png`, numeric order. A 1-5 scale
