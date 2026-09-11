@@ -114,12 +114,14 @@ def main(folder):
         for fmt in ["smiley", "scale"]
     }
     fly = Fly()
+    print(f"Probing the fly's innate tile bias on a blank screen, {len(JITTERS)} jitter trials per tile...", file=sys.stderr)
     print(f"{'#':>3}  {'question':<40}  " + "".join(f"{i:>7}" for i in range(1, 6)) + "  answer")
     fly.see(BLANK)
     for fmt, tiles in tile_sets.items():
         scores, votes = decide(fly, tiles)
         cells = "".join(f"{s:>+7.2f}" for s in scores) + "       " * (5 - len(scores))
         print(f"{'':>3}  {'innate bias, no question, ' + fmt:<40}  {cells}", flush=True)
+    print(f"Bias probe done. Showing {len(shots)} questions from {folder}...", file=sys.stderr)
     for shot in shots:
         scale = tile_format(shot) == "scale"
         tiles = tile_sets["scale" if scale else "smiley"]

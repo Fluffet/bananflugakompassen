@@ -1,7 +1,40 @@
-
+Probing the fly's innate tile bias on a blank screen, 5 jitter trials per tile...
   #  question                                        1      2      3      4      5  answer
      innate bias, no question, smiley           -13.91 -35.62 -18.73 -31.00       
      innate bias, no question, scale            -27.26 -29.73 -37.52 -26.01 -22.50
+Bias probe done. Showing 35 questions from screenshots...
   1  barn-fran-13-ar-som-begar-grova-brott-sk    +0.43  +1.33  +1.72  -0.88         ganska bra (1/5)
   2  vinstdrivande-aktiebolag-ska-inte-fa-dri    +1.34  +1.70  +1.16  +0.50         ganska daligt (3/5)
   3  bygg-hyresratter-i-villaomraden-for-att-    -1.65  -1.20  -1.13  -0.28         mycket bra (3/5)
+  4  skillnaden-i-inkomst-mellan-de-som-arbet    +1.44  +0.58  +0.27  +0.75         mycket daligt (4/5) extra viktigt
+  5  det-ska-bli-enklare-att-starta-gruvor-oc    +1.10  +0.13  +0.24  +0.49         mycket daligt (3/5)
+  6  sverige-ska-ha-mer-ambitiosa-klimatmal-n    -0.46  +0.65  -0.39  -0.19         ganska daligt (2/5)
+  7  permanenta-uppehallstillstand-ska-rivas-    -0.52  +0.04  -0.21  +0.32         mycket bra (3/5)
+  8  sverige-ska-pa-sikt-lamna-nato              +0.74  +1.16  +0.38  -0.31         ganska daligt (1/5)
+  9  public-service-ska-ha-ett-smalare-uppdra    -0.74  -0.53  -1.76  -0.90         ganska daligt (2/5)
+ 10  karensavdraget-vid-sjukdom-ska-avskaffas    +0.39  +0.32  +0.47  -0.01         ganska bra (2/5)
+ 11  betyg-i-ordning-och-uppf-rande-ska-inf-r    -0.48  +0.52  -0.14  +0.19         ganska daligt (3/5)
+ 12  pensionsaldern-ska-inte-hojas               -0.40  -1.29  -0.64  -1.54         mycket daligt (1/5)
+ 13  tillat-forsaljning-av-stark-l-och-vin-i-    -0.43  -0.93  +0.47  +0.34         ganska bra (3/5)
+ 14  staten-ska-investera-mer-pengar-i-gr-na-    +1.11  +1.43  +1.46  +0.89         ganska bra (2/5)
+ 15  sverige-bor-infora-euro-som-valuta          -1.03  -0.88  -1.42  -0.85         mycket bra (1/5)
+ 16  sverige-ska-6ka-det-internationella-bist    +1.55  +1.16  +1.29  +1.22         mycket daligt (3/5)
+ 17  marknadshyror-ska-inf-ras-pa-nya-hyresra    -0.65  -0.05  -0.71  -0.87         ganska daligt (2/5)
+ 18  skolan-ska-ta-storre-ansvar-for-undervis    -0.07  -0.91  -0.66  -0.83         mycket daligt (2/5)
+ 19  det-ska-vara-majligt-att-dra-tillbaka-me    +1.40  +0.94  +2.04  +2.14         mycket bra (2/5)
+ 20  lagstifta-om-kortare-veckoarbetstid         -0.82  -0.97  -0.96  -1.66         mycket daligt (1/5)
+ 21  skatten-pa-bensin-och-diesel-ska-sankas     +2.47  +2.84  +1.28  +1.23         ganska daligt (3/5)
+ 22  sverige-ska-verka-for-att-fler-lander-er    +2.08  +1.63  +0.78  +1.63         mycket daligt (3/5)
+ 23  det-offentliga-stodet-till-kulturverksam    +0.45  +0.23  -0.27  -0.37         mycket daligt (2/5)
+ 24  tandvard-for-personer-under-23-ar-ska-va    +1.09  +1.15  +0.94  -0.50         ganska daligt (2/5)
+ 25  grova-sexuella-6vergrepp-mot-barn-ska-ku    -0.59  -0.61  -0.87  -0.54         mycket bra (1/5)
+ 26  den-tillfalligt-s-nkta-momsen-pa-mat-ska    -0.04  -0.99  -1.08  -0.15         mycket daligt (2/5)
+ 27  staten-ska-ge-ekonomiskt-stdd-till-bygga    -1.67  -0.81  -1.89  -0.85         ganska daligt (3/5)
+ 28  kommunerna-ska-inte-langre-kunna-stoppa-    +1.12  +0.34  +0.89  +1.01         mycket daligt (2/5)
+ 29  staten-ska-ta-6ver-ansvaret-for-sjukvard    -1.58  -1.42  -1.29  -1.72         ganska bra (0/5)
+ 30  staten-bor-ge-ekonomiskt-stod-for-att-by    +1.91  +1.64  +1.70  +2.22         mycket bra (4/5) extra viktigt
+ 31  pappamanaderna-i-foraldraf-rsakringen-sk    -1.22  -1.64  -0.94  -0.62         mycket bra (3/5)
+ 32  hur-nara-ekonomiskt-och-militart-samarbe    +1.27  +2.10  +2.76  +1.85  +2.73  3 (1/5)
+ 33  hur-mycket-ska-hoginkomsttagare-betala-i    -2.23  -1.69  -1.66  -1.10  -0.88  5 (0/5)
+ 34  hur-6ppet-ska-sverige-vara-for-att-ta-em    +0.33  -0.28  -0.41  -0.10  +0.63  5 (2/5)
+ 35  hur-mycket-av-skogen-i-sverige-ska-skydd    -2.38  -1.93  -2.70  -1.04  -1.90  4 (2/5)
